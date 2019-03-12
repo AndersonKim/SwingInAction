@@ -1,6 +1,8 @@
+package autoreloadconfig;
 
-import org.apache.commons.configuration2.PropertiesConfiguration;
-import org.apache.commons.configuration2.ex.ConfigurationException;
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.commons.configuration.reloading.FileChangedReloadingStrategy;
 
 import java.util.Map;
 /**
@@ -110,9 +112,8 @@ public class PropertiesAutoLoad
 
             //自动保存
             propConfig.setAutoSave(autoSave);
-        }
-        catch (ConfigurationException e) {
-
+        }catch (ConfigurationException e) {
+            e.printStackTrace();
         }
     }
 }
