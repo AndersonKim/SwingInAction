@@ -33,6 +33,7 @@ public class ToDoFrame extends JFrame {
         });
 
         progressBar=new JProgressBar();
+        progressBar.setStringPainted(true);
 
         panel=new JPanel();
         panel.setLayout(new FlowLayout());
@@ -44,41 +45,29 @@ public class ToDoFrame extends JFrame {
 
     //模拟耗时操作
     private void getTodo() {
-        NumberArrary arrarys = this.new NumberArrary();
-        arrarys.execute();
-    }
-    private class NumberArrary extends SwingWorker<Void, Integer> {
-        int[] num={10,20,30,40,50,60,70,80,90,100};
-        int index=0;
-        protected void process() {
-            progressBar.setValue(num[index]);
-        }
+        progressBar.setIndeterminate(true);
+        progressBar.setString("获取待办中...");
 
-        @Override
-        protected void done() {
-            super.done();
-            progressBar.setValue(100);
-            progressBar.setStringPainted(true);
-            progressBar.setString("待办获取成功");
-        }
+        new SwingWorker<String, Void>() {
 
-        @Override
-        protected Void doInBackground(){
-            for(int i=0;i<10;i++){
-                process();
-                index=i;
-                System.out.println("loop "+i);
-                try {
-                    Thread.sleep(250);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+
+            @Override
+            protected void done() {
+                progressBar.setIndeterminate(false);
+                progressBar.setValue(100);
+                progressBar.setString("待办获取成功");
+                super.done();
             }
-            return null;
-        }
 
-
+            @Override
+            protected String doInBackground() throws Exception {
+                //模拟获取待办
+                Thread.sleep(5000);
+                return null;
+            }
+        }.execute();
     }
+
     public static void main(String[] args){
         ToDoFrame toDoFrame=new ToDoFrame();
     }
